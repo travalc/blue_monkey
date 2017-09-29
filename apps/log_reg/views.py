@@ -17,7 +17,7 @@ def display_form_error(data, request):
 def index(request):
     #if user is logged in, redirect to home page
     if 'user' in request.session:
-        return redirect(reverse('log_reg:success'))
+        return redirect(reverse('travels:index'))
     registration_form = Registration_Form()
     login_form = Login_Form()
     return render(request, 'log_reg/log_reg.html', {'registration_form': registration_form, 'login_form': login_form})
@@ -31,7 +31,7 @@ def register(request):
                 return redirect(reverse('log_reg:index'))
             else:
                 request.session['user'] = data
-                return redirect(reverse('log_reg:success'))
+                return redirect(reverse('travels:index'))
         else:
             display_form_error(form, request)
             return redirect(reverse('log_reg:log_reg'))
@@ -48,7 +48,7 @@ def login(request):
                 return redirect(reverse('log_reg:index'))
             else:
                 request.session['user'] = user
-                return redirect(reverse('log_reg:success'))
+                return redirect(reverse('travels:index'))
         else:
             display_form_error(form, request)
             return redirect(reverse('log_reg:index'))
@@ -60,9 +60,3 @@ def logout(request):
     #clear session and redirect to index when logout is clicked
     request.session.clear()
     return redirect(reverse('log_reg:index'))
-#temporary
-def success(request):
-    #if no user logged in, redirect to login/registration
-    if 'user' not in request.session:
-        return redirect(reverse('log_reg:index'))
-    return render(request, 'log_reg/success.html')

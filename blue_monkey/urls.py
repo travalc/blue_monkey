@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('apps.index.urls', namespace='index')),
     url(r'^main/', include('apps.log_reg.urls', namespace='log_reg')),
+    url(r'^travels/', include('apps.travels.urls', namespace='travels')),
 ]

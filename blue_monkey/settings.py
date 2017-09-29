@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.log_reg',
     'apps.index',
+    'apps.travels',
 ]
 
 MIDDLEWARE = [
