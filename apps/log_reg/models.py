@@ -14,7 +14,7 @@ class UserManager(models.Manager):
         username_regex = re.compile(r'^[A-Za-z0-9]+$')
         name_regex = re.compile(r'^[A-Za-z\s]+$')
         email_regex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
-        ***REMOVED*** = User.objects.filter(email=data['email'])
+        existing_username = User.objects.filter(username=data['username'])
         if len(data['username']) < 3 or len(data['name']) < 3:
             errors.append('Username and name must both be at least 3 characters')
         if not username_regex.match(data['username']):
@@ -23,8 +23,8 @@ class UserManager(models.Manager):
             errors.append('Name must letters and spaces only!')
         if not email_regex.match(data['email']):
             errors.append('Email is improperly formatted')
-        if len(***REMOVED***) > 0:
-            errors.append('A user with that email already exist')
+        if len(existing_username) > 0:
+            errors.append('A user with that username already exists')
         if len(data['password']) < 8:
             errors.append('Password must be at least 8 characters')
         if data['password'] != data['confirm_password']:
