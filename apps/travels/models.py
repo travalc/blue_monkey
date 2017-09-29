@@ -38,7 +38,7 @@ class Trip(models.Model):
     travel_from = models.DateField(auto_now_add=False, auto_now=False)
     travel_to = models.DateField(auto_now_add=False, auto_now=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='planned_trips')
-    joined_by = models.ManyToManyField(User)
+    joined_by = models.ManyToManyField(User, related_name='joined_trips')
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     objects = TripManager()

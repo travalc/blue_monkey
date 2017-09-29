@@ -37,5 +37,16 @@
             <a href="{% url 'log_reg:logout' %}">Log Out</a>
         </div>
     </div>
+    <div class="container">
+        <h2>{{ trip.destination }}</h2>
+        <p>Planned By: {{ trip.created_by.name }}</p>
+        <p>Description: {{ trip.description }}</p>
+        <p>Travel Date From: {{ trip.travel_from }}</p>
+        <p>Travel Date To: {{ trip.travel_to }}</p>
+        <h3>Other users joining the trip</h3>
+        {% for user in joined_users %}
+            <p>{{ user.name }}</p>
+        {% endfor %}
+    </div>
 </body>
 </html>

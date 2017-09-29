@@ -10,7 +10,11 @@ from .models import *
 def index(request):
     if 'user' not in request.session:
         return redirect(reverse('index:index'))
-    return render(request,'travels/index.html')
+    user = User.objects.get(username=request.session['user']['username'])
+    user_trips_query = user.planned_trips.all()
+    joined_trips = user.joined_trips.all()
+    all_trips = Trip.objects.all().exclude(created_by=user.id).exclude(joined_by=user.id)
+    return render(request,'travels/index.html', {'user_trips': user_trips_query, 'all_trips': all_trips, 'joined_trips': joined_trips})
 
 def add(request):
     if 'user' not in request.session:
@@ -28,7 +32,22 @@ def add_trip(request):
             else:
                 return redirect(reverse('travels:add'))
         else:
-            messages.error('Errors found!')
+            messages.error(request, 'Errors found!')
     else:
         messages.error('invalid request')
         return redirect(reverse('travels:add'))
+
+def join(request):
+    if request.POST:
+        user = User.objects.get(username=request.session['user']['username'])
+        trip = Trip.objects.get(id=request.POST['id'])
+        trip.joined_by.add(user)
+        return redirect(reverse('travels:index'))
+    else:
+        messages.error('invalid request')
+        return redirect(reverse('travels:index'))
+
+def destination(request, id):
+    trip = Trip.objects.get(id=id)
+    joined_users = User.objects.filter(joined_trips__id=id)
+    return render(request, 'travels/destination.html', {'trip': trip, 'joined_users': joined_users})

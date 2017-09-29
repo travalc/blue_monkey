@@ -29,6 +29,12 @@
         a {
             text-decoration: underline;
         }
+        .heading {
+            background-color: lightgray;
+        }
+        .column {
+            border: 0.5px solid black;
+        }
     </style>
     <title>Document</title>
 </head>
@@ -37,6 +43,97 @@
         <div class="row header">
             <h1>Travel Dashboard</h1>
             <a href="{% url 'log_reg:logout' %}">Log Out</a>
+        </div>
+        <div class="container">
+            <h2>Your Trip Schedules</h2>
+            <div class="row">
+                <div class="col-md-3 heading column">
+                    <strong>Destination</strong>
+                </div>
+                <div class="col-md-3 heading column">
+                    <strong>Travel Start Date</strong>
+                </div>
+                <div class="col-md-3 heading column">
+                    <strong>Travel End Date</strong>
+                </div>
+                <div class="col-md-3 heading column">
+                    <strong>Plan</strong>
+                </div>
+            </div>
+            {% for trip in user_trips %}
+                <div class="row">
+                    <div class="col-md-3 column">
+                        <a href="{% url 'travels:destination' id=trip.id %}">{{ trip.destination }}</a>
+                    </div>
+                    <div class="col-md-3 column">
+                        {{ trip.travel_from }}
+                    </div>
+                    <div class="col-md-3 column">
+                        {{ trip.travel_to }}
+                    </div>
+                    <div class="col-md-3 column">
+                        {{ trip.description }}
+                    </div>
+                </div>
+            {% endfor %}
+            {% for trip in joined_trips %}
+            <div class="row">
+                <div class="col-md-3 column">
+                    <a href="{% url 'travels:destination' id=trip.id %}">{{ trip.destination }}</a>
+                </div>
+                <div class="col-md-3 column">
+                    {{ trip.travel_from }}
+                </div>
+                <div class="col-md-3 column">
+                    {{ trip.travel_to }}
+                </div>
+                <div class="col-md-3 column">
+                    {{ trip.description }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 heading column">
+                    <strong>Name</strong>
+                </div>
+                <div class="col-md-3 heading column">
+                    <strong>Destination</strong>
+                </div>
+                <div class="col-md-2 heading column">
+                    <strong>Travel Start Date</strong>
+                </div>
+                <div class="col-md-2 heading column">
+                    <strong>Travel End Date</strong>
+                </div>
+                <div class="col-md-1 heading column">
+                    <strong>Join?</strong>
+                </div>
+            </div>
+            {% for trip in all_trips %}
+            <div class="row">
+                <div class="col-md-3 column">
+                    {{ trip.created_by.name }}
+                </div>
+                <div class="col-md-3 column">
+                    <a href="{% url 'travels:destination' id=trip.id %}">{{ trip.destination }}</a>
+                </div>
+                <div class="col-md-2 column">
+                    {{ trip.travel_from }}
+                </div>
+                <div class="col-md-2 column">
+                    {{ trip.travel_to }}
+                </div>
+                <div class="col-md-1 column">
+                    <form action="{% url 'travels:join' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ trip.id }}">
+                        <input type="submit" value="Join" class="btn-primary">
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
         </div>
         <a href="{% url 'travels:add' %}">Add Travel Plan</a>
     </div>
