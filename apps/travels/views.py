@@ -48,6 +48,8 @@ def join(request):
         return redirect(reverse('travels:index'))
 
 def destination(request, id):
+    if 'user' not in request.session:
+        return redirect(reverse('index:index'))
     trip = Trip.objects.get(id=id)
     joined_users = User.objects.filter(joined_trips__id=id)
     return render(request, 'travels/destination.html', {'trip': trip, 'joined_users': joined_users})
